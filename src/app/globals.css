@@ -1,26 +1,435 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+   Linear canvas depth · Notion structure · Stripe motion
+   ═══════════════════════════════════════════════ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Linear-inspired surface ladder ── */
+  --canvas:     #09090e;   /* deepest — page bg */
+  --surface-1:  #0d0e14;   /* cards, panels */
+  --surface-2:  #13141b;   /* hover, featured */
+  --surface-3:  #1a1b23;   /* interactive bg */
+  --surface-4:  #21222b;   /* popovers, dropdowns */
+
+  /* ── Hairlines (Linear) ── */
+  --line:        rgba(255,255,255,0.07);
+  --line-strong: rgba(255,255,255,0.12);
+  --line-focus:  rgba(99,102,241,0.5);
+
+  /* ── Ink scale (Linear) ── */
+  --ink:         #eeeef2;  /* headings, primary */
+  --ink-2:       #b4b5c4;  /* secondary */
+  --ink-3:       #7c7d8e;  /* tertiary / muted */
+  --ink-4:       #4e4f5e;  /* disabled, subtle */
+
+  /* ── Brand accent (between Linear lavender & Stripe indigo) ── */
+  --accent:      #6366f1;
+  --accent-light:#818cf8;
+  --accent-press:#4f46e5;
+  --accent-bg:   rgba(99,102,241,0.10);
+  --accent-glow: rgba(99,102,241,0.20);
+
+  /* ── Notion-inspired category tints (dark adapted) ── */
+  --tint-dsa:    rgba(99,102,241,0.12);
+  --tint-java:   rgba(245,158,11,0.12);
+  --tint-sd:     rgba(16,185,129,0.12);
+  --tint-ai:     rgba(139,92,246,0.12);
+  --tint-other:  rgba(107,114,128,0.10);
+
+  /* ── Semantic ── */
+  --green:  #22c55e;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+
+  /* ── shadcn tokens (always dark) ── */
+  --background:          var(--canvas);
+  --foreground:          var(--ink);
+  --card:                var(--surface-1);
+  --card-foreground:     var(--ink);
+  --popover:             var(--surface-4);
+  --popover-foreground:  var(--ink);
+  --primary:             var(--accent);
+  --primary-foreground:  #fff;
+  --secondary:           var(--surface-2);
+  --secondary-foreground:var(--ink);
+  --muted:               var(--surface-2);
+  --muted-foreground:    var(--ink-3);
+  --accent:              var(--surface-2);
+  --accent-foreground:   var(--ink);
+  --destructive:         var(--red);
+  --border:              var(--line);
+  --input:               var(--line);
+  --ring:                var(--accent);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background:          var(--canvas);
+  --foreground:          var(--ink);
+  --card:                var(--surface-1);
+  --card-foreground:     var(--ink);
+  --popover:             var(--surface-4);
+  --popover-foreground:  var(--ink);
+  --primary:             #6366f1;
+  --primary-foreground:  #fff;
+  --secondary:           var(--surface-2);
+  --secondary-foreground:var(--ink);
+  --muted:               var(--surface-2);
+  --muted-foreground:    var(--ink-3);
+  --accent:              var(--surface-2);
+  --accent-foreground:   var(--ink);
+  --destructive:         var(--red);
+  --border:              var(--line);
+  --input:               var(--line);
+  --ring:                #6366f1;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-popover:            var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:          var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-accent:             var(--accent);
+  --color-accent-foreground:  var(--accent-foreground);
+  --color-destructive:        var(--destructive);
+  --color-border:             var(--border);
+  --color-input:              var(--input);
+  --color-ring:               var(--ring);
+  --radius-sm:  4px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@layer base {
+  * { @apply border-border outline-ring/50; box-sizing: border-box; }
+  body { @apply bg-background text-foreground; }
+}
+
+/* ═══════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════ */
+
+/* Lock both html + body — no white flash on overscroll, sidebar gap, or mobile bounce */
+html {
+  background: #09090e;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #09090e;
+  color: var(--ink);
+  font-family: var(--font-sans, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  /* Stripe: ss01 globally enables single-story 'a' and other humanist alternates */
+  font-feature-settings: "ss01";
+}
+
+/* Stripe: tabular-nums on any cell with money / numbers */
+.num { font-variant-numeric: tabular-nums; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 9999px; }
+
+/* ═══════════════════════════════════════════════
+   CARD SYSTEM (Linear surface ladder)
+   ═══════════════════════════════════════════════ */
+
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.card-interactive {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: background 150ms, border-color 150ms;
+  cursor: default;
+}
+.card-interactive:hover {
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+}
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY SYSTEM
+   ─────────────────────────────────────────────
+   Scale sources from the three design files:
+   · Large display / stat nums → Stripe weight 300, tight -0.04em
+   · Page titles               → Linear weight 600, -0.03em
+   · Card titles / labels      → Notion weight 500/600, -0.02em
+   · Eyebrow                   → Linear uppercase, +0.06em, muted
+   · Body                      → weight 400, 1.5 leading (all three)
+   ═══════════════════════════════════════════════ */
+
+/* Large display numbers — Stripe editorial thin */
+/* "The thin weight is the brand." (Stripe design file) */
+.display-num {
+  font-size: 40px;
+  font-weight: 300;            /* Stripe: weight 300 with negative tracking */
+  letter-spacing: -0.04em;     /* Stripe: -1.4px at 56px → ~-0.025em; we go a touch tighter */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01", "tnum";
+  color: var(--ink);
+  line-height: 1;
+}
+
+/* Page-level title — Linear weight 600 tight tracking */
+.title-page {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* Card / section title — Notion heading-5 equivalent */
+.title-card {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+/* Eyebrow — Linear: uppercase, slight positive tracking, muted */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;      /* Linear: +0.4px = positive tracking on eyebrow */
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* Stat numbers — Stripe tabular + thin + tight (used in cards) */
+.stat-num {
+  font-size: 28px;
+  font-weight: 300;            /* Stripe: display at weight 300 */
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01", "tnum";
+  color: var(--ink);
+  line-height: 1;
+}
+
+/* Body small — Notion body-sm (14px 400 1.50) */
+.body-sm {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* Caption — Stripe caption (13px 400, tabular where numeric) */
+.caption {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* Mono — for code snippets, IDs, time values */
+.mono {
+  font-family: ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.01em;
+}
+
+/* ═══════════════════════════════════════════════
+   BUTTON SYSTEM
+   Primary: Stripe pill · Secondary: Linear ghost
+   ═══════════════════════════════════════════════ */
+
+/* Primary — Stripe pill */
+.btn-primary {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 120ms, transform 100ms, opacity 120ms;
+  white-space: nowrap;
+}
+.btn-primary:hover  { background: #818cf8; }
+.btn-primary:active { background: #4f46e5; transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Secondary — Linear ghost */
+.btn-secondary {
+  background: transparent;
+  color: var(--ink-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 120ms, color 120ms, border-color 120ms;
+}
+.btn-secondary:hover { background: var(--surface-2); color: var(--ink); border-color: var(--line-strong); }
+
+/* Icon ghost */
+.btn-icon {
+  background: transparent;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: background 120ms, color 120ms;
+}
+.btn-icon:hover { background: var(--surface-2); color: var(--ink); }
+
+/* ═══════════════════════════════════════════════
+   FORM INPUTS
+   ═══════════════════════════════════════════════ */
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 9px 12px;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+input:focus-visible { outline: none; }
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.35);
+  cursor: pointer;
+}
+select option { background: var(--surface-3); }
+textarea { resize: vertical; min-height: 72px; }
+
+label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ═══════════════════════════════════════════════
+   CATEGORY CHIPS (Notion tint style, dark)
+   ═══════════════════════════════════════════════ */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+}
+
+/* ═══════════════════════════════════════════════
+   STRIPE GRADIENT MESH (hero section only)
+   ═══════════════════════════════════════════════ */
+
+.hero-mesh {
+  position: relative;
+}
+.hero-mesh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 40%, rgba(99,102,241,0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 20%, rgba(139,92,246,0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 60% at 60% 80%, rgba(16,185,129,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+.animate-in {
+  animation: fadeUp 0.18s ease-out;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   GRADIENT TEXT
+   ═══════════════════════════════════════════════ */
+
+.gradient-text {
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════
+   PROGRESS BAR
+   ═══════════════════════════════════════════════ */
+
+.progress-track {
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 400ms ease;
 }
