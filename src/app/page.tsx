@@ -1,17 +1,19 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { getTodayEntries } from '@/lib/db'
+import { getTodayEntries, getEntriesForDateRange } from '@/lib/db'
 import { LogEntry, CATEGORIES } from '@/lib/supabase'
 import LogEntryForm from '@/components/LogEntryForm'
 import SessionCard from '@/components/SessionCard'
-import { format } from 'date-fns'
-import { Flame, Clock, Layers, AlertTriangle } from 'lucide-react'
+import { format, subDays } from 'date-fns'
+import { Flame, Clock, Layers, AlertTriangle, ShieldAlert } from 'lucide-react'
 
 export default function TodayPage() {
-  const [entries, setEntries] = useState<LogEntry[]>([])
-  const [loading, setLoading] = useState(true)
-  const [dbError, setDbError] = useState(false)
+  const [entries, setEntries]           = useState<LogEntry[]>([])
+  const [loading, setLoading]           = useState(true)
+  const [dbError, setDbError]           = useState(false)
+  const [streakDays, setStreakDays]     = useState(0)
+  const [studiedYesterday, setStudiedYesterday] = useState(false)
 
   const load = useCallback(async () => {
     try {
@@ -19,6 +21,26 @@ export default function TodayPage() {
       setDbError(false)
     } catch { setDbError(true) }
     finally  { setLoading(false) }
+  }, [])
+
+  // Load streak info for protection alert (background, non-blocking)
+  useEffect(() => {
+    const from      = format(subDays(new Date(), 14), 'yyyy-MM-dd')
+    const yesterday = format(subDays(new Date(), 1),  'yyyy-MM-dd')
+    getEntriesForDateRange(from, yesterday)
+      .then(recent => {
+        const mbd = recent.reduce<Record<string, number>>((acc, e) => {
+          acc[e.date] = (acc[e.date] ?? 0) + e.duration_minutes; return acc
+        }, {})
+        setStudiedYesterday((mbd[yesterday] ?? 0) > 0)
+        // Count streak ending at yesterday
+        let s = 0; const d = new Date(subDays(new Date(), 1))
+        while (s < 14) {
+          if ((mbd[format(d, 'yyyy-MM-dd')] ?? 0) > 0) { s++; d.setDate(d.getDate() - 1) } else break
+        }
+        setStreakDays(s)
+      })
+      .catch(() => {})
   }, [])
 
   useEffect(() => { load() }, [load])
@@ -133,6 +155,24 @@ export default function TodayPage() {
             <p style={{ fontSize:13, fontWeight:600, color:'#ef4444', margin:0 }}>Supabase not connected</p>
             <p style={{ fontSize:12, color:'var(--ink-3)', margin:'4px 0 0' }}>
               Add <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to <code>.env.local</code>, run the SQL schema, then restart.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Streak protection alert ──────────────────────────── */}
+      {!loading && !dbError && entries.length === 0 && studiedYesterday && streakDays > 0 && (
+        <div className="animate-in" style={{
+          display: 'flex', gap: 10, padding: '12px 16px', borderRadius: 10, marginBottom: 16,
+          background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.30)',
+        }}>
+          <ShieldAlert size={15} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: '#f59e0b', margin: 0 }}>
+              🔥 {streakDays}-day streak at risk!
+            </p>
+            <p style={{ fontSize: 12, color: 'var(--ink-3)', margin: '3px 0 0' }}>
+              You haven't studied today. Log a session before midnight to keep your streak alive.
             </p>
           </div>
         </div>

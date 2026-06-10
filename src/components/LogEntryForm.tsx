@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { CATEGORIES, Category } from '@/lib/supabase'
 import { addLogEntry } from '@/lib/db'
 import { format, parseISO, addDays } from 'date-fns'
-import { Plus, Clock, Moon } from 'lucide-react'
+import { Plus, Clock, Moon, Sparkles, X } from 'lucide-react'
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 
@@ -44,8 +44,10 @@ export default function LogEntryForm({ onAdded }: Props) {
   const [startTime, setStartTime] = useState(snapSlot(new Date(now.getTime() - 3600000)))
   const [endTime, setEndTime]     = useState(snapSlot(now))
   const [notes, setNotes]         = useState('')
-  const [loading, setLoading]     = useState(false)
-  const [error, setError]         = useState('')
+  const [loading, setLoading]         = useState(false)
+  const [error, setError]             = useState('')
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestLoading, setSuggestLoading] = useState(false)
 
   const duration    = calcDuration(startTime, endTime)
   const crossNight  = duration > 0 && calcDuration(startTime, endTime) !== ((parseInt(endTime) - parseInt(startTime)))
@@ -63,10 +65,25 @@ export default function LogEntryForm({ onAdded }: Props) {
     if (duration <= 0) { setError('Start and end time cannot be the same'); return }
     setError(''); setLoading(true)
     try {
-      await addLogEntry({ category, topic: topic.trim(), start_time: startTime, end_time: endTime, duration_minutes: duration, notes: notes.trim() || null, date })
+      const savedTopic    = topic.trim()
+      const savedCategory = category
+      await addLogEntry({ category, topic: savedTopic, start_time: startTime, end_time: endTime, duration_minutes: duration, notes: notes.trim() || null, date })
       setTopic(''); setNotes('')
       setDate(format(new Date(), 'yyyy-MM-dd'))
+      setSuggestions([])
       onAdded()
+
+      // Smart suggestions — non-blocking, silent on error
+      setSuggestLoading(true)
+      fetch('/api/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic: savedTopic, category: savedCategory }),
+      })
+        .then(r => r.json())
+        .then(d => { if (Array.isArray(d.suggestions)) setSuggestions(d.suggestions) })
+        .catch(() => {})
+        .finally(() => setSuggestLoading(false))
     } catch (err) {
       setError('Failed to save. Check Supabase config.')
       console.error(err)
@@ -207,6 +224,43 @@ export default function LogEntryForm({ onAdded }: Props) {
           <Plus size={15} />
           {loading ? 'Saving…' : 'Log Session'}
         </button>
+
+        {/* ── Smart suggestions ── */}
+        {(suggestLoading || suggestions.length > 0) && (
+          <div className="animate-in" style={{ padding: '12px 14px', borderRadius: 10, background: 'var(--surface-2)', border: '1px solid var(--line)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Sparkles size={12} style={{ color: '#818cf8' }} />
+                <span className="eyebrow" style={{ color: '#818cf8' }}>Study next</span>
+              </div>
+              {!suggestLoading && (
+                <button onClick={() => setSuggestions([])} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-4)', padding: 2, display: 'flex' }}>
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+            {suggestLoading ? (
+              <p style={{ fontSize: 12, color: 'var(--ink-4)', margin: 0 }}>Getting suggestions…</p>
+            ) : (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {suggestions.map(s => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => { setTopic(s); setSuggestions([]) }}
+                    style={{
+                      padding: '5px 10px', borderRadius: 8, fontSize: 12, cursor: 'pointer',
+                      background: 'var(--accent-bg)', border: '1px solid rgba(99,102,241,0.25)',
+                      color: '#818cf8', fontWeight: 500, transition: 'background 120ms',
+                    }}
+                  >
+                    {s} →
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </form>
   )
