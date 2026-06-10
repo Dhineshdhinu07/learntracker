@@ -7,14 +7,16 @@ import { format, startOfWeek, endOfWeek } from 'date-fns'
 import { Edit2, Check, X } from 'lucide-react'
 
 const DEFAULT_GOALS: Record<Category, number> = {
-  'DSA': 300, 'Java': 180, 'System Design': 120, 'AI Engineering': 120, 'Other': 60,
+  'DSA': 300, 'Python': 180, 'System Design': 120, 'Computer Fundamentals': 90, 'Frontend': 120, 'Backend': 120, 'Other': 60,
 }
 
 const GUIDES: { cat: string; rec: string; why: string; color: string }[] = [
-  { cat: '🧩 DSA',          rec: '5h/week', why: 'Core for FAANG & product interviews',  color: '#818cf8' },
-  { cat: '☕ Java',          rec: '3h/week', why: 'Internals, concurrency, Spring',        color: '#fbbf24' },
-  { cat: '🏗️ System Design', rec: '2h/week', why: 'HLD + LLD fundamentals',               color: '#34d399' },
-  { cat: '🤖 AI Engineering',rec: '2h/week', why: 'LLMs, RAG, agents, Claude API',         color: '#c084fc' },
+  { cat: '🧩 DSA',                   rec: '5h/week',   why: 'Core for product & FAANG interviews',  color: '#818cf8' },
+  { cat: '🐍 Python',                rec: '3h/week',   why: 'Language depth, libs & idioms',        color: '#38bdf8' },
+  { cat: '🏗️ System Design',         rec: '2h/week',   why: 'HLD + LLD fundamentals',               color: '#34d399' },
+  { cat: '💻 Computer Fundamentals', rec: '1.5h/week', why: 'OS, networks, DBs, compilers',         color: '#fbbf24' },
+  { cat: '🎨 Frontend',              rec: '2h/week',   why: 'DOM, React, CSS, browser internals',   color: '#f472b6' },
+  { cat: '⚙️ Backend',               rec: '2h/week',   why: 'APIs, DBs, auth & scalability',        color: '#c084fc' },
 ]
 
 export default function PlanPage() {

@@ -13,11 +13,13 @@ interface Props {
 
 // Notion-style tint backgrounds adapted for dark mode
 const TINT_MAP: Record<string, { bg: string; text: string; border: string }> = {
-  'DSA':           { bg: 'rgba(99,102,241,0.10)',  text: '#818cf8', border: 'rgba(99,102,241,0.25)'  },
-  'Java':          { bg: 'rgba(245,158,11,0.10)',  text: '#fbbf24', border: 'rgba(245,158,11,0.25)'  },
-  'System Design': { bg: 'rgba(16,185,129,0.10)',  text: '#34d399', border: 'rgba(16,185,129,0.25)'  },
-  'AI Engineering':{ bg: 'rgba(139,92,246,0.10)',  text: '#c084fc', border: 'rgba(139,92,246,0.25)'  },
-  'Other':         { bg: 'rgba(107,114,128,0.10)', text: '#9ca3af', border: 'rgba(107,114,128,0.20)' },
+  'DSA':                  { bg: 'rgba(99,102,241,0.10)',  text: '#818cf8', border: 'rgba(99,102,241,0.25)'  },
+  'Python':               { bg: 'rgba(14,165,233,0.10)',  text: '#38bdf8', border: 'rgba(14,165,233,0.25)'  },
+  'System Design':        { bg: 'rgba(16,185,129,0.10)',  text: '#34d399', border: 'rgba(16,185,129,0.25)'  },
+  'Computer Fundamentals':{ bg: 'rgba(245,158,11,0.10)',  text: '#fbbf24', border: 'rgba(245,158,11,0.25)'  },
+  'Frontend':             { bg: 'rgba(236,72,153,0.10)',  text: '#f472b6', border: 'rgba(236,72,153,0.25)'  },
+  'Backend':              { bg: 'rgba(139,92,246,0.10)',  text: '#c084fc', border: 'rgba(139,92,246,0.25)'  },
+  'Other':                { bg: 'rgba(107,114,128,0.10)', text: '#9ca3af', border: 'rgba(107,114,128,0.20)' },
 }
 
 // Convert HH:MM (24hr) → h:MM AM/PM

@@ -27,11 +27,13 @@ function snapSlot(date: Date): string {
 }
 
 const TINT_MAP: Record<string, { bg: string; text: string; border: string; activeBg: string }> = {
-  'DSA':           { bg:'rgba(99,102,241,0.08)',  text:'#818cf8', border:'rgba(99,102,241,0.25)', activeBg:'rgba(99,102,241,0.16)'  },
-  'Java':          { bg:'rgba(245,158,11,0.08)',  text:'#fbbf24', border:'rgba(245,158,11,0.25)', activeBg:'rgba(245,158,11,0.16)'  },
-  'System Design': { bg:'rgba(16,185,129,0.08)',  text:'#34d399', border:'rgba(16,185,129,0.25)', activeBg:'rgba(16,185,129,0.16)'  },
-  'AI Engineering':{ bg:'rgba(139,92,246,0.08)',  text:'#c084fc', border:'rgba(139,92,246,0.25)', activeBg:'rgba(139,92,246,0.16)'  },
-  'Other':         { bg:'rgba(107,114,128,0.08)', text:'#9ca3af', border:'rgba(107,114,128,0.20)', activeBg:'rgba(107,114,128,0.14)' },
+  'DSA':                  { bg:'rgba(99,102,241,0.08)',  text:'#818cf8', border:'rgba(99,102,241,0.25)',  activeBg:'rgba(99,102,241,0.16)'  },
+  'Python':               { bg:'rgba(14,165,233,0.08)',  text:'#38bdf8', border:'rgba(14,165,233,0.25)',  activeBg:'rgba(14,165,233,0.16)'  },
+  'System Design':        { bg:'rgba(16,185,129,0.08)',  text:'#34d399', border:'rgba(16,185,129,0.25)',  activeBg:'rgba(16,185,129,0.16)'  },
+  'Computer Fundamentals':{ bg:'rgba(245,158,11,0.08)',  text:'#fbbf24', border:'rgba(245,158,11,0.25)',  activeBg:'rgba(245,158,11,0.16)'  },
+  'Frontend':             { bg:'rgba(236,72,153,0.08)',  text:'#f472b6', border:'rgba(236,72,153,0.25)',  activeBg:'rgba(236,72,153,0.16)'  },
+  'Backend':              { bg:'rgba(139,92,246,0.08)',  text:'#c084fc', border:'rgba(139,92,246,0.25)',  activeBg:'rgba(139,92,246,0.16)'  },
+  'Other':                { bg:'rgba(107,114,128,0.08)', text:'#9ca3af', border:'rgba(107,114,128,0.20)', activeBg:'rgba(107,114,128,0.14)' },
 }
 
 export default function LogEntryForm({ onAdded }: Props) {

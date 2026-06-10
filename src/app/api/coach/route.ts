@@ -10,13 +10,15 @@ export async function POST(req: NextRequest) {
 
   const { prompt, context } = await req.json()
 
-  const systemPrompt = `You are a focused, no-nonsense tech career coach helping a software engineer prep for job switching. They are targeting product companies and want roles as a Backend Engineer or AI Engineer.
+  const systemPrompt = `You are a focused, no-nonsense tech career coach helping a software engineer prep for job switching. They are targeting product companies and want roles as a Backend Engineer or Full-Stack Engineer.
 
 Their learning focus areas (in priority order):
-1. DSA (Data Structures & Algorithms) — LeetCode-style problems, patterns
-2. Java — Core Java, JVM internals, concurrency, Spring ecosystem
+1. DSA (Data Structures & Algorithms) — LeetCode-style problems, patterns, complexity
+2. Python — Language depth, stdlib, OOP, common libraries (FastAPI, asyncio, etc.)
 3. System Design — HLD (High-Level Design) and LLD (Low-Level Design) fundamentals
-4. AI Engineering — LLMs, RAG, vector DBs, agents, Anthropic/OpenAI APIs
+4. Computer Fundamentals — OS, networking, databases, compilers, memory
+5. Frontend — HTML/CSS, JavaScript, React, browser internals, performance
+6. Backend — REST/GraphQL APIs, databases, auth, caching, scalability patterns
 
 You have access to their recent study log showing what they studied and for how long.
 

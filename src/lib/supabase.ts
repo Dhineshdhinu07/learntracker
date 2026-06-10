@@ -14,14 +14,16 @@ export function getSupabase(): SupabaseClient {
   return _supabase
 }
 
-export type Category = 'DSA' | 'Java' | 'System Design' | 'AI Engineering' | 'Other'
+export type Category = 'DSA' | 'Python' | 'System Design' | 'Computer Fundamentals' | 'Frontend' | 'Backend' | 'Other'
 
 export const CATEGORIES: { value: Category; color: string; icon: string }[] = [
-  { value: 'DSA', color: '#6366f1', icon: '🧩' },
-  { value: 'Java', color: '#f59e0b', icon: '☕' },
-  { value: 'System Design', color: '#10b981', icon: '🏗️' },
-  { value: 'AI Engineering', color: '#8b5cf6', icon: '🤖' },
-  { value: 'Other', color: '#6b7280', icon: '📚' },
+  { value: 'DSA',                  color: '#6366f1', icon: '🧩' },
+  { value: 'Python',               color: '#0ea5e9', icon: '🐍' },
+  { value: 'System Design',        color: '#10b981', icon: '🏗️' },
+  { value: 'Computer Fundamentals',color: '#f59e0b', icon: '💻' },
+  { value: 'Frontend',             color: '#ec4899', icon: '🎨' },
+  { value: 'Backend',              color: '#8b5cf6', icon: '⚙️' },
+  { value: 'Other',                color: '#6b7280', icon: '📚' },
 ]
 
 export interface LogEntry {
