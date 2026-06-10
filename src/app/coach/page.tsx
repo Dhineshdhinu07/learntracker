@@ -293,7 +293,7 @@ export default function CoachPage() {
         <div>
           <h1 className="title-page" style={{ marginBottom: 4 }}>AI Coach</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Sparkles size={12} style={{ color: '#818cf8' }} />
+            <Sparkles size={12} style={{ color: 'var(--ink-2)' }} />
             <span style={{ fontSize: 12, color: 'var(--ink-3)' }}>
               Claude · full study log context · {messages.length} messages saved
             </span>
@@ -364,7 +364,7 @@ export default function CoachPage() {
           {!historyLoading && (
             <div className="card animate-in" style={{ padding: '18px 20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg,#6366f1,#a78bfa)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg,#fff,#888)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Sparkles size={14} style={{ color: '#fff' }} />
                 </div>
                 <div>
@@ -428,7 +428,7 @@ export default function CoachPage() {
                       <div className="animate-in" style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
                         {m.role === 'user' ? (
                           <div style={{ maxWidth: '78%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3 }}>
-                            <div style={{ padding: '10px 14px', borderRadius: '14px 14px 4px 14px', background: '#6366f1', color: '#fff', fontSize: 13, lineHeight: 1.5 }}>
+                            <div style={{ padding: '10px 14px', borderRadius: '14px 14px 4px 14px', background: '#fff', color: '#000', fontSize: 13, lineHeight: 1.5 }}>
                               {m.text}
                             </div>
                             {m.created_at && <span style={{ fontSize: 10, color: 'var(--ink-4)' }}>{msgTime(m.created_at)}</span>}
@@ -436,8 +436,8 @@ export default function CoachPage() {
                         ) : (
                           <div className="card" style={{ padding: '14px 16px', width: '100%' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-                              <Sparkles size={12} style={{ color: '#818cf8' }} />
-                              <span className="eyebrow" style={{ color: '#818cf8' }}>Coach</span>
+                              <Sparkles size={12} style={{ color: 'var(--ink-2)' }} />
+                              <span className="eyebrow" style={{ color: 'var(--ink-2)' }}>Coach</span>
                               {m.created_at && <span style={{ fontSize: 11, color: 'var(--ink-4)', marginLeft: 'auto' }}>{msgTime(m.created_at)}</span>}
                             </div>
                             <MarkdownMessage text={m.text} />
@@ -457,7 +457,7 @@ export default function CoachPage() {
               <div style={{ display: 'flex', gap: 4 }}>
                 {[0, 1, 2].map(i => (
                   <span key={i} style={{
-                    width: 6, height: 6, borderRadius: '50%', background: '#6366f1',
+                    width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.5)',
                     animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
                   }} />
                 ))}
@@ -526,10 +526,10 @@ export default function CoachPage() {
                       >
                         <div style={{
                           width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                          background: 'rgba(99,102,241,0.10)', border: '1px solid rgba(99,102,241,0.18)',
+                          background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}>
-                          <MessageSquare size={13} style={{ color: '#818cf8' }} />
+                          <MessageSquare size={13} style={{ color: 'var(--ink-2)' }} />
                         </div>
 
                         <div style={{ flex: 1, minWidth: 0 }}>
@@ -559,7 +559,7 @@ export default function CoachPage() {
                             <div key={m.id ?? i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
                               {m.role === 'user' ? (
                                 <div style={{ maxWidth: '78%', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3 }}>
-                                  <div style={{ padding: '10px 14px', borderRadius: '14px 14px 4px 14px', background: '#6366f1', color: '#fff', fontSize: 13, lineHeight: 1.5 }}>
+                                  <div style={{ padding: '10px 14px', borderRadius: '14px 14px 4px 14px', background: '#fff', color: '#000', fontSize: 13, lineHeight: 1.5 }}>
                                     {m.text}
                                   </div>
                                   {m.created_at && <span style={{ fontSize: 10, color: 'var(--ink-4)' }}>{msgTime(m.created_at)}</span>}
@@ -567,8 +567,8 @@ export default function CoachPage() {
                               ) : (
                                 <div className="card" style={{ padding: '12px 14px', width: '100%' }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                                    <Sparkles size={11} style={{ color: '#818cf8' }} />
-                                    <span className="eyebrow" style={{ color: '#818cf8', fontSize: 10 }}>Coach</span>
+                                    <Sparkles size={11} style={{ color: 'var(--ink-2)' }} />
+                                    <span className="eyebrow" style={{ color: 'var(--ink-2)', fontSize: 10 }}>Coach</span>
                                     {m.created_at && <span style={{ fontSize: 10, color: 'var(--ink-4)', marginLeft: 'auto' }}>{msgTime(m.created_at)}</span>}
                                   </div>
                                   <MarkdownMessage text={m.text} />
@@ -608,7 +608,7 @@ export default function CoachPage() {
 
           {reportLoading && (
             <div className="card animate-in" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />
+              <Loader2 size={14} className="animate-spin" style={{ color: 'var(--ink-2)' }} />
               <span style={{ fontSize: 13, color: 'var(--ink-3)' }}>Analysing your week…</span>
             </div>
           )}
@@ -616,8 +616,8 @@ export default function CoachPage() {
           {!reportLoading && report && (
             <div className="card animate-in" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid var(--line)' }}>
-                <Sparkles size={12} style={{ color: '#818cf8' }} />
-                <span className="eyebrow" style={{ color: '#818cf8' }}>Weekly analysis</span>
+                <Sparkles size={12} style={{ color: 'var(--ink-2)' }} />
+                <span className="eyebrow" style={{ color: 'var(--ink-2)' }}>Weekly analysis</span>
               </div>
               <MarkdownMessage text={report} />
             </div>
@@ -653,7 +653,7 @@ export default function CoachPage() {
 
           {readinessLoading && (
             <div className="card animate-in" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <Loader2 size={14} className="animate-spin" style={{ color: '#6366f1' }} />
+              <Loader2 size={14} className="animate-spin" style={{ color: 'var(--ink-2)' }} />
               <span style={{ fontSize: 13, color: 'var(--ink-3)' }}>Evaluating your prep against interview criteria…</span>
             </div>
           )}

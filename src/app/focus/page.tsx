@@ -8,13 +8,13 @@ import { Play, Pause, X, RotateCcw, Coffee, Check, Timer } from 'lucide-react'
 
 // ── Design tokens for category tints ────────────────────────────────────────
 const TINT_MAP: Record<string, { bg: string; text: string; border: string; activeBg: string; glow: string }> = {
-  'DSA':                  { bg:'rgba(99,102,241,0.08)',  text:'#818cf8', border:'rgba(99,102,241,0.30)',  activeBg:'rgba(99,102,241,0.16)', glow:'rgba(99,102,241,0.20)'  },
-  'Python':               { bg:'rgba(14,165,233,0.08)',  text:'#38bdf8', border:'rgba(14,165,233,0.30)',  activeBg:'rgba(14,165,233,0.16)', glow:'rgba(14,165,233,0.20)'  },
-  'System Design':        { bg:'rgba(16,185,129,0.08)',  text:'#34d399', border:'rgba(16,185,129,0.30)',  activeBg:'rgba(16,185,129,0.16)', glow:'rgba(16,185,129,0.20)'  },
-  'Computer Fundamentals':{ bg:'rgba(245,158,11,0.08)',  text:'#fbbf24', border:'rgba(245,158,11,0.30)',  activeBg:'rgba(245,158,11,0.16)', glow:'rgba(245,158,11,0.20)'  },
-  'Frontend':             { bg:'rgba(236,72,153,0.08)',  text:'#f472b6', border:'rgba(236,72,153,0.30)',  activeBg:'rgba(236,72,153,0.16)', glow:'rgba(236,72,153,0.20)'  },
-  'Backend':              { bg:'rgba(139,92,246,0.08)',  text:'#c084fc', border:'rgba(139,92,246,0.30)',  activeBg:'rgba(139,92,246,0.16)', glow:'rgba(139,92,246,0.20)'  },
-  'Other':                { bg:'rgba(107,114,128,0.08)', text:'#9ca3af', border:'rgba(107,114,128,0.25)', activeBg:'rgba(107,114,128,0.14)', glow:'rgba(107,114,128,0.14)' },
+  'DSA':                  { bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'Python':               { bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'System Design':        { bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'Computer Fundamentals':{ bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'Frontend':             { bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'Backend':              { bg:'rgba(255,255,255,0.04)', text:'rgba(255,255,255,0.7)', border:'rgba(255,255,255,0.18)', activeBg:'rgba(255,255,255,0.10)', glow:'rgba(255,255,255,0.08)' },
+  'Other':                { bg:'rgba(255,255,255,0.03)', text:'rgba(255,255,255,0.5)', border:'rgba(255,255,255,0.12)', activeBg:'rgba(255,255,255,0.08)', glow:'rgba(255,255,255,0.06)' },
 }
 
 const DURATIONS = [15, 20, 25, 30, 45, 60]
@@ -155,7 +155,7 @@ export default function FocusPage() {
 
   const catData     = CATEGORIES.find(c => c.value === category)
   const tint        = TINT_MAP[category]
-  const ringColor   = phase === 'break' ? '#22c55e' : (catData?.color ?? '#6366f1')
+  const ringColor   = phase === 'break' ? '#22c55e' : '#ffffff'
   const phaseLabel  = phase === 'break' ? 'Break' : phase === 'paused' ? 'Paused' : 'Focus'
 
   // ════════════════════════════════════════════════════════════════════════════
@@ -169,7 +169,9 @@ export default function FocusPage() {
         <div style={{ marginBottom: 24 }}>
           <div style={{ display:'flex', alignItems:'center', gap: 10, marginBottom: 4 }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg,#6366f1,#a78bfa)',
+              width: 36, height: 36, borderRadius: 10,
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
               <Timer size={18} style={{ color: '#fff' }} />
@@ -225,9 +227,9 @@ export default function FocusPage() {
                 <button key={d} onClick={() => setDurationMin(d)} style={{
                   flex: 1, padding: '9px 4px', borderRadius: 8, border: '1px solid',
                   fontSize: 13, fontWeight: active ? 700 : 500, cursor: 'pointer',
-                  background: active ? 'rgba(99,102,241,0.14)' : 'var(--surface-2)',
-                  color:      active ? '#818cf8' : 'var(--ink-3)',
-                  borderColor: active ? 'rgba(99,102,241,0.4)' : 'var(--line)',
+                  background: active ? 'rgba(255,255,255,0.10)' : 'var(--surface-2)',
+                  color:      active ? '#ffffff' : 'var(--ink-3)',
+                  borderColor: active ? 'rgba(255,255,255,0.25)' : 'var(--line)',
                   transition: 'all 120ms',
                 }}>
                   {d}<span style={{ fontSize: 10 }}>m</span>
@@ -248,8 +250,8 @@ export default function FocusPage() {
           style={{
             width: '100%', justifyContent: 'center',
             padding: '14px', fontSize: 15, borderRadius: 12,
-            background: tint.activeBg !== 'rgba(107,114,128,0.14)' ? catData?.color : '#6366f1',
-            boxShadow: `0 4px 24px ${tint.glow}`,
+            background: '#ffffff', color: '#000000',
+            boxShadow: '0 4px 24px rgba(255,255,255,0.12)',
           }}
         >
           <Play size={16} fill="white" />
@@ -268,7 +270,7 @@ export default function FocusPage() {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: '#09090e',
+      background: '#000000',
       display: 'flex',
       flexDirection: isLandscape ? 'row' : 'column',
       alignItems: 'center',
