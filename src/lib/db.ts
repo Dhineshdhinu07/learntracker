@@ -1,4 +1,4 @@
-import { getSupabase, LogEntry, WeeklyGoal, Category, ProblemLog, RevisionTopic, Difficulty, ProblemStatus } from './supabase'
+import { getSupabase, LogEntry, WeeklyGoal, Category, ProblemLog, RevisionTopic, Difficulty, ProblemStatus, CoachMessage } from './supabase'
 import { format, startOfWeek, addDays } from 'date-fns'
 
 const USER_ID = 'default'
@@ -145,5 +145,39 @@ export async function markRevisionReviewed(id: string, intervalDays: number): Pr
 
 export async function deleteRevisionTopic(id: string): Promise<void> {
   const { error } = await getSupabase().from('revision_topics').delete().eq('id', id)
+  if (error) throw error
+}
+
+// ─── Coach Chat History ───────────────────────────────────────────────────────
+
+/** Load last `limit` messages, oldest-first for display */
+export async function getChatHistory(limit = 100): Promise<CoachMessage[]> {
+  const { data, error } = await getSupabase()
+    .from('coach_messages')
+    .select('*')
+    .eq('user_id', USER_ID)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) throw error
+  return (data ?? []).reverse()   // reverse so oldest is first in array
+}
+
+/** Persist a single message and return the saved row (with id + created_at) */
+export async function saveChatMessage(role: 'user' | 'assistant', text: string): Promise<CoachMessage> {
+  const { data, error } = await getSupabase()
+    .from('coach_messages')
+    .insert({ user_id: USER_ID, role, text })
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+/** Wipe the full chat history for this user */
+export async function clearChatHistory(): Promise<void> {
+  const { error } = await getSupabase()
+    .from('coach_messages')
+    .delete()
+    .eq('user_id', USER_ID)
   if (error) throw error
 }

@@ -47,6 +47,24 @@ export interface WeeklyGoal {
   week_start: string
 }
 
+export interface CoachMessage {
+  id:         string
+  user_id:    string
+  role:       'user' | 'assistant'
+  text:       string
+  created_at: string
+}
+
+// SQL:
+// create table coach_messages (
+//   id uuid primary key default gen_random_uuid(),
+//   user_id text not null default 'default',
+//   role text not null check (role in ('user','assistant')),
+//   text text not null,
+//   created_at timestamptz default now()
+// );
+// create index on coach_messages (user_id, created_at desc);
+
 export type Difficulty    = 'Easy' | 'Medium' | 'Hard'
 export type ProblemStatus = 'Todo' | 'Attempted' | 'Solved' | 'Revisit'
 
