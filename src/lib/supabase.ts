@@ -46,3 +46,56 @@ export interface WeeklyGoal {
   target_minutes: number
   week_start: string
 }
+
+export type Difficulty    = 'Easy' | 'Medium' | 'Hard'
+export type ProblemStatus = 'Todo' | 'Attempted' | 'Solved' | 'Revisit'
+
+export interface ProblemLog {
+  id:         string
+  user_id:    string
+  title:      string
+  url:        string | null
+  difficulty: Difficulty
+  status:     ProblemStatus
+  category:   Category
+  notes:      string | null
+  date:       string
+  created_at: string
+}
+
+export interface RevisionTopic {
+  id:           string
+  user_id:      string
+  topic:        string
+  category:     Category
+  interval_days: number
+  last_reviewed: string
+  next_review:   string
+  notes:        string | null
+  created_at:   string
+}
+
+// SQL to create tables in Supabase:
+// create table problem_log (
+//   id uuid primary key default gen_random_uuid(),
+//   user_id text not null default 'default',
+//   title text not null,
+//   url text,
+//   difficulty text not null,
+//   status text not null default 'Todo',
+//   category text not null default 'DSA',
+//   notes text,
+//   date date not null default current_date,
+//   created_at timestamptz default now()
+// );
+// create table revision_topics (
+//   id uuid primary key default gen_random_uuid(),
+//   user_id text not null default 'default',
+//   topic text not null,
+//   category text not null,
+//   interval_days int not null default 7,
+//   last_reviewed date not null default current_date,
+//   next_review date not null,
+//   notes text,
+//   created_at timestamptz default now()
+// );
